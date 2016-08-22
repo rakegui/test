@@ -1,0 +1,62 @@
+<html>
+<body>
+
+<script>
+// data preapre
+    // logic here like how you register your services.
+    var injections = {};
+    injections["a"] = 2;
+    injections["b"] = 4;
+    // preapre some methods, like your resolve methods
+    var calla = function (a) {
+        alert("calla-" + a);
+    };
+
+    var callb = function (b) {
+        alert("callb-" + b);
+    }
+
+    var callc = function (c) {
+        alert("callc-" + c);
+    }
+
+//  util functions
+    function getParmName(func) {
+        var ret;
+
+        var STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+        var ARGUMENT_NAMES = /([^\s,]+)/g;
+        var fnStr = func.toString().replace(STRIP_COMMENTS, '');
+        var resultAry = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+        if (resultAry === null)
+            ret = '';
+        else
+            ret = resultAry[0];
+
+        return ret;
+    }
+//  Do injection, here is somehthing might AngularJS did.
+    function callFunc(func) {
+        var inject = injections[getParmName(func)];
+        if (inject){
+            func(inject);
+        }
+        else{
+            alert("Invalid function - " + func);
+        }
+    }
+
+// main    
+    (function(){
+        // dynamics call
+        callFunc(calla);
+        callFunc(callb);
+        callFunc(callc);
+
+
+    })();
+
+
+</script>
+</body>
+</html>
